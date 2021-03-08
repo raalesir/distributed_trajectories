@@ -15,7 +15,7 @@ from OD import  OD
 from  TM import TM
 
 
-INPUT = 'taxi_log_2008_by_id/*'
+INPUT = '../data/*'
 
 
 
