@@ -13,6 +13,11 @@ def middle_interval_for_x(x, A, B, m):
     belongs to.
     """
 
+    if (x == A):
+        x = x + .001
+    elif (x == B):
+        x = x - .001
+
     dx = (B - A) / m
     i = ceil((x - A) / dx)
 

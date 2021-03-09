@@ -47,3 +47,39 @@ class TestBasic:
         assert res == []
 
 
+
+    def test_middle_interval_x_1(self):
+        """
+        testing the coordinates for the middle of the interval and the box number
+        middle_interval_for_x(x, A, B, m)
+        :return:
+        """
+        res = udfs.middle_interval_for_x(4.67, 3, 7, 4)
+
+        assert  res == (4.5, 2.0)
+
+
+
+    def test_middle_interval_x_border_case1(self):
+        """
+        testing the coordinates for the middle of the interval and the box number
+        middle_interval_for_x(x, A, B, m)
+        :return:
+        """
+        res = udfs.middle_interval_for_x(3, 3, 7, 4)
+
+        assert res == (3.5, 1.0)
+
+
+    def test_middle_interval_x_border_case2(self):
+        """
+        testing the coordinates for the middle of the interval and the box number
+        middle_interval_for_x(x, A, B, m)
+        :return:
+        """
+        res = udfs.middle_interval_for_x(7, 3, 7, 4)
+
+        assert res == (6.5, 4.0)
+
+
+    
