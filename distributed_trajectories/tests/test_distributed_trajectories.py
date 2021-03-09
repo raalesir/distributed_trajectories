@@ -2,20 +2,48 @@
 
 """Tests for `distributed_trajectories` package."""
 
+import pytest
 
-import unittest
-
-from distributed_trajectories import distributed_trajectories
+from distributed_trajectories import udfs
 
 
-class TestDistributed_trajectories(unittest.TestCase):
-    """Tests for `distributed_trajectories` package."""
+class TestBasic:
+    # INPUT = "data/input/dataset.jsonl"
 
-    def setUp(self):
-        """Set up test fixtures, if any."""
 
-    def tearDown(self):
-        """Tear down test fixtures, if any."""
 
-    def test_000_something(self):
-        """Test something."""
+
+    def test_d1_state_vector_1(self):
+        """
+        testing the transformation to 1D coordinates
+        :return:
+        """
+        res = udfs.d1_state_vector(i=2, j=5, width=1, m=7)
+        res = [el[0] for el in res]
+
+        assert res == [4.0, 5.0, 6.0, 11.0, 12.0, 13.0, 18.0, 19.0, 20.0]
+
+
+    def test_d1_state_vector_2(self):
+        """
+        testing the transformation to 1D coordinates with `width==0`
+        :return:
+        """
+        res = udfs.d1_state_vector(i=2, j=5, width=0, m=7)
+        res = [el[0] for el in res]
+
+        assert res == [12.0]
+
+
+
+    def test_d1_state_vector_3(self):
+        """
+        testing the transformation to 1D coordinates out of grid
+        :return:
+        """
+        res = udfs.d1_state_vector(i=2, j=7, width=1, m=7)
+        res = [el[0] for el in res]
+
+        assert res == []
+
+
