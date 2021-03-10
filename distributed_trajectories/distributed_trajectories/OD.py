@@ -4,6 +4,7 @@ from pyspark.sql import Window
 
 
 from udfs  import  d1_state_vector, updates_to_the_transition_matrix
+from consts import  width
 
 class OD:
     """
@@ -39,9 +40,9 @@ class OD:
             .withColumn('first_lon_idx', F.first('lon_idx').over(window)) \
             .withColumn('last_lon_idx', F.last('lon_idx').over(window)) \
             .withColumn('d1_states1',
-                        d1_state_vector_udf(F.col('first_lon_idx'), F.col('first_lat_idx'), F.lit(1), F.lit(100))) \
+                        d1_state_vector_udf(F.col('first_lon_idx'), F.col('first_lat_idx'), F.lit(width), F.lit(100))) \
             .withColumn('d1_states2',
-                        d1_state_vector_udf(F.col('last_lon_idx'), F.col('last_lat_idx'), F.lit(1), F.lit(100)))\
+                        d1_state_vector_udf(F.col('last_lon_idx'), F.col('last_lat_idx'), F.lit(width), F.lit(100)))\
 
 
     def set_OD_updates(self):

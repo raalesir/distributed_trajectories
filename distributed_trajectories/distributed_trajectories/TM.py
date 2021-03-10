@@ -1,8 +1,9 @@
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.types import ArrayType, FloatType
-from udfs import d1_state_vector, updates_to_the_transition_matrix
 
+from udfs import d1_state_vector, updates_to_the_transition_matrix
+from consts import width
 
 class TM:
     """
@@ -30,7 +31,7 @@ class TM:
         window = Window.partitionBy([F.col('id'), F.to_date(F.col('avg_ts'))]).orderBy(F.col('avg_ts'))
 
         self.df = self.df \
-            .withColumn('d1_states', d1_state_vector_udf(F.col('lon_idx'), F.col('lat_idx'), F.lit(1), F.lit(100))) \
+            .withColumn('d1_states', d1_state_vector_udf(F.col('lon_idx'), F.col('lat_idx'), F.lit(width), F.lit(100))) \
             .withColumn('d1_states_lag', F.lag(F.col('d1_states')).over(window)) \
             .dropna()
 

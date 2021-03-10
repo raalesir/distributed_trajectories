@@ -12,8 +12,9 @@ from  pyspark.sql import  Window
 from udfs import   middle_interval_for_x
 
 from OD import  OD
-from  TM import TM
+from TM import TM
 
+from  consts  import  beijing_lat_box,  beijing_lon_box
 
 INPUT = '../data/*'
 
@@ -24,8 +25,8 @@ class PrepareDataset:
     reading, filtering and preparing Dataset
     """
 
-    beijing_lat_box = [39.6, 40.2]
-    beijing_lon_box = [116.1, 116.7]
+    # beijing_lat_box = [39.6, 40.2]
+    # beijing_lon_box = [116.1, 116.7]
 
 
     def __init__(self, path):
@@ -49,7 +50,8 @@ class PrepareDataset:
     def read(self):
         """
         reading  Pyspark DF
-        :return:
+
+        :return: PySpark DF
         """
 
         df = spark.read.csv(self.path,\
@@ -62,7 +64,8 @@ class PrepareDataset:
     def get_data(self):
         """
         getter
-        :return:
+
+        :return: `self.df`
         """
 
         self._process_data()
@@ -71,8 +74,9 @@ class PrepareDataset:
 
     def _process_data(self):
         """
+        helper method  for data processing
 
-        :return:
+        :return: Nothing
         """
 
         print('cropping data')
@@ -88,7 +92,7 @@ class PrepareDataset:
     def set_avg_time_for_cell(self):
         """
         for each  cell we  calculate time  as  the average time  for all points  in that cell
-        :return:
+        :return: `self.df`
         """
 
         self.df = self.df.groupBy(['id', F.to_date(F.col('ts')).alias('date'), 'lat_idx', 'lon_idx', 'helper']) \
@@ -101,14 +105,14 @@ class PrepareDataset:
         """
         crops dataset  to fit into Beijing Box
 
-        :return:  filtered DF
+        :return:  filtered `self.df`
         """
 
         self.df = self.df\
-            .filter(F.col('lat') >= self.beijing_lat_box[0])\
-            .filter(F.col('lat') <= self.beijing_lat_box[1])\
-            .filter(F.col('lon') >= self.beijing_lon_box[0])\
-            .filter(F.col('lon') <= self.beijing_lon_box[1]) \
+            .filter(F.col('lat') >= beijing_lat_box[0])\
+            .filter(F.col('lat') <= beijing_lat_box[1])\
+            .filter(F.col('lon') >= beijing_lon_box[0])\
+            .filter(F.col('lon') <= beijing_lon_box[1]) \
             .drop_duplicates()
 
 
@@ -130,15 +134,15 @@ class PrepareDataset:
 
         self.df = self.df.withColumn('lon_middle', middle_interval_for_x_udf(
             F.col('lon'),
-            F.lit(self.beijing_lon_box[0]),
-            F.lit(self.beijing_lon_box[1]),
+            F.lit(beijing_lon_box[0]),
+            F.lit(beijing_lon_box[1]),
             F.lit(100))
                                   )
 
         self.df =  self.df.withColumn('lat_middle', middle_interval_for_x_udf(
             F.col('lat'),
-            F.lit(self.beijing_lat_box[0]),
-            F.lit(self.beijing_lat_box[1]),
+            F.lit(beijing_lat_box[0]),
+            F.lit(beijing_lat_box[1]),
             F.lit(100))
                                 )
 
@@ -153,7 +157,7 @@ class PrepareDataset:
     def set_helper_column(self):
         """
         the helper column is needed for further aggregations
-        :return:
+        :return: `self.df`
         """
         window = Window.partitionBy([F.col('id'), F.to_date(F.col('ts'))]).orderBy(F.col('ts'))
 
