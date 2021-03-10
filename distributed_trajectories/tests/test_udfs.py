@@ -71,6 +71,7 @@ class TestBasic:
         assert res == (3.5, 1.0)
 
 
+
     def test_middle_interval_x_border_case2(self):
         """
         testing the coordinates for the middle of the interval and the box number
@@ -82,4 +83,4 @@ class TestBasic:
         assert res == (6.5, 4.0)
 
 
-    
+
