@@ -18,10 +18,10 @@ class TestBasic:
         testing the transformation to 1D coordinates
         :return:
         """
-        res = udfs.d1_state_vector(i=2, j=5, width=1, m=7)
+        res = udfs.d1_state_vector(i=2, j=4, width=1, m=7, n=5)
         res = [el[0] for el in res]
 
-        assert res == [4.0, 5.0, 6.0, 11.0, 12.0, 13.0, 18.0, 19.0, 20.0]
+        assert res == [3.0, 4.0, 5.0, 8.0, 9.0, 10.0, 13.0, 14.0, 15.0]
 
 
     def test_d1_state_vector_2(self):
@@ -29,7 +29,7 @@ class TestBasic:
         testing the transformation to 1D coordinates with `width==0`
         :return:
         """
-        res = udfs.d1_state_vector(i=2, j=5, width=0, m=7)
+        res = udfs.d1_state_vector(i=2, j=5, width=0, m=7, n=7)
         res = [el[0] for el in res]
 
         assert res == [12.0]
@@ -41,7 +41,7 @@ class TestBasic:
         testing the transformation to 1D coordinates out of grid
         :return:
         """
-        res = udfs.d1_state_vector(i=2, j=7, width=1, m=7)
+        res = udfs.d1_state_vector(i=2, j=17, width=1, m=7, n=17)
         res = [el[0] for el in res]
 
         assert res == []

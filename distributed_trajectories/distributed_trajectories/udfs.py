@@ -70,14 +70,14 @@ def d1_coords(d2_vals, m):
     return d1_vals
 
 
-def d1_state_vector(i,j, width, m):
+def d1_state_vector(i,j, width, m, n):
     """
     given `i` and `j` positions on the lattice and the width of distribution,
-    produces a 1D state vector representation of `mxm` length.
+    produces a 1D state vector representation of `mxn` length.
     """
 
 
-    if check_central_position(m, i, j, width):
+    if check_central_position(m, n, i, j, width):
 
         d2 = d2_coords(i, j, width)
         # print(d2)
@@ -88,7 +88,7 @@ def d1_state_vector(i,j, width, m):
         d2_vals = list(zip(d2,vals))
 
 
-        d1_vals = d1_coords(d2_vals, m)
+        d1_vals = d1_coords(d2_vals, n)
 #         print(type(d1_vals[0]))
     else:
         # print("the distribution is out  of the grid")
@@ -96,12 +96,25 @@ def d1_state_vector(i,j, width, m):
     return d1_vals
 
 
-def check_central_position(m, i, j, width):
+def check_central_position(m, n, i, j, width):
     """
-    checking if  the central position `i,j` and the `width` are ok with the `m`
+    checking if  the  distribution given by the   `i,j` and  `width`  will be inside the  grid
+    defined  by the `n` and `m`.
+
+    `i`  is in   `[1..m]`, `j` is in `[1..n]`, where `m` -- number of cells along latitude  and
+     `n` is the number of cells along longitude.
+
+    :param m: number of cells along latitude
+    :param n: number of cells along  longitude
+    :param i: current position along latitude
+    :param j: current position along longitude
+    :param width: width of the distribution of state
+    :return: True or False
+
     """
 
-    result = (i + width <= m) & (i - width > 0) & (j + width <= m) & (j - width > 0)
+
+    result = (i + width <= m) & (i - width > 0) & (j + width <= n) & (j - width > 0)
 
     return result
 

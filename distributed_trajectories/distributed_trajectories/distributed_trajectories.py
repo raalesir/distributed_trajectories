@@ -14,7 +14,7 @@ from udfs import   middle_interval_for_x
 from OD import  OD
 from TM import TM
 
-from  consts  import  beijing_lat_box,  beijing_lon_box
+from  consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells
 
 INPUT = '../data/*'
 
@@ -136,14 +136,14 @@ class PrepareDataset:
             F.col('lon'),
             F.lit(beijing_lon_box[0]),
             F.lit(beijing_lon_box[1]),
-            F.lit(100))
+            F.lit(lon_cells))
                                   )
 
         self.df =  self.df.withColumn('lat_middle', middle_interval_for_x_udf(
             F.col('lat'),
             F.lit(beijing_lat_box[0]),
             F.lit(beijing_lat_box[1]),
-            F.lit(100))
+            F.lit(lat_cells))
                                 )
 
 
