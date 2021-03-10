@@ -1,5 +1,6 @@
 """
 User Defined Functions
+======================
 """
 
 from math import  ceil
@@ -101,7 +102,7 @@ def check_central_position(m, n, i, j, width):
     checking if  the  distribution given by the   `i,j` and  `width`  will be inside the  grid
     defined  by the `n` and `m`.
 
-    `i`  is in   `[1..m]`, `j` is in `[1..n]`, where `m` -- number of cells along latitude  and
+    :math:`i\in[1..m]`, :math:`j\in[1..n]`, where `m` -- number of cells along latitude  and
      `n` is the number of cells along longitude.
 
     :param m: number of cells along latitude

@@ -1,4 +1,5 @@
 """Main module."""
+
 from  pyspark.sql import  SparkSession
 
 import pyspark.sql.functions as F
@@ -9,12 +10,15 @@ from pyspark.sql.types import StructType, StructField,\
 
 from  pyspark.sql import  Window
 
-from udfs import   middle_interval_for_x
+from  consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells
 
 from OD import  OD
 from TM import TM
 
-from  consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells
+from udfs import   middle_interval_for_x
+
+
+
 
 INPUT = '../data/*'
 

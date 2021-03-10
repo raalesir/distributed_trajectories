@@ -1,5 +1,5 @@
 Welcome to Distributed Trajectories's documentation!
-======================================
+====================================================
 
 .. toctree::
    :maxdepth: 2
