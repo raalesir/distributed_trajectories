@@ -6,7 +6,7 @@ Distributed Trajectories
 .. image:: https://img.shields.io/pypi/v/distributed_trajectories.svg
         :target: https://pypi.python.org/pypi/distributed_trajectories
 
-.. image:: https://img.shields.io/travis/raalesir/distributed_trajectories.svg
+.. image:: https://travis-ci.com/raalesir/distributed_trajectories.svg?branch=master
         :target: https://travis-ci.com/raalesir/distributed_trajectories
 
 .. image:: https://readthedocs.org/projects/distributed-trajectories/badge/?version=latest
