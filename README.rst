@@ -28,6 +28,36 @@ Features
 
 * TODO
 
+
+Installation
+------------
+
+#. clone the public repository:
+
+    .. code-block:: console
+
+        $ git clone git://github.com/raalesir/distributed_trajectories
+#. create a Python virtual environment
+
+    .. code-block:: console
+
+        $ cd distributed_trajectories/distributed_trajectories && python3 -m venv taxi
+
+
+#. activate  the ``venv``. Check ``which python`` to point to the current directory.
+
+    .. code-block:: console
+
+       $ source taxi/bin/activate
+
+
+#. install dependencies:
+
+    .. code-block:: console
+
+     $ pip3  install  -r requirements.txt
+
+     
 Credits
 -------
 
