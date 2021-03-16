@@ -18,6 +18,7 @@ class TM:
 
         self.df = df
 
+
     def set_d1_state_vector(self):
         """
         returns 1D representation for the distributed state
@@ -35,6 +36,16 @@ class TM:
                         ) \
             .withColumn('d1_states_lag', F.lag(F.col('d1_states')).over(window)) \
             .dropna()
+
+
+    def set_timestamp_delta(self):
+        """
+        adds a time delta column, the difference in time between successive observations
+        :return:
+        """
+        window = Window.partitionBy([F.col('id'), F.to_date(F.col('avg_ts'))]).orderBy(F.col('avg_ts'))
+
+        self.df = self.df.withColumn('delta_avg_ts', F.col('avg_ts').cast('long') - F.lag(F.col('avg_ts')).over(window).cast('long'))
 
 
     def set_TM_updates(self):
@@ -57,12 +68,13 @@ class TM:
         :return:
         """
 
-        TM = self.df.select('updates_to_TM') \
+        TM = self.df.select(['updates_to_TM', 'delta_avg_ts']) \
             .withColumn('updates_to_TM', F.explode('updates_to_TM')) \
             .withColumn("x", F.col('updates_to_TM').getItem(0)) \
             .withColumn("y", F.col('updates_to_TM').getItem(1)) \
             .withColumn("val", F.col('updates_to_TM').getItem(2)) \
-            .drop('updates_to_TM') \
+            .filter(F.col('delta_avg_ts') < 700)\
+        .drop('updates_to_TM') \
             .groupBy(['x', 'y']).agg(F.sum('val').alias('updates_to_TM'))
 
         return TM
@@ -75,6 +87,8 @@ class TM:
         """
         print('setting  1D state vector')
         self.set_d1_state_vector()
+        print("setting timestamp delta")
+        self.set_timestamp_delta()
         print("setting  TM updates")
         self.set_TM_updates()
         print("aggregating TM updates")
