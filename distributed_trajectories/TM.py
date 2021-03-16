@@ -1,3 +1,9 @@
+
+"""
+Transition Matrix object
+========================
+"""
+
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.types import ArrayType, FloatType
@@ -13,7 +19,8 @@ class TM:
     def __init__(self, df):
         """
         takes PySpark DF to create TM
-        :param df:
+
+        :param df: PySpark  dataframe
         """
 
         self.df = df
@@ -22,7 +29,8 @@ class TM:
     def set_d1_state_vector(self):
         """
         returns 1D representation for the distributed state
-        :return:
+
+        :return:  Transition Matrix object
         """
 
         d1_state_vector_udf = F.udf(d1_state_vector,
@@ -41,7 +49,8 @@ class TM:
     def set_timestamp_delta(self):
         """
         adds a time delta column, the difference in time between successive observations
-        :return:
+
+        :return: Transition Matrix object
         """
         window = Window.partitionBy([F.col('id'), F.to_date(F.col('avg_ts'))]).orderBy(F.col('avg_ts'))
 
@@ -51,7 +60,8 @@ class TM:
     def set_TM_updates(self):
         """
         for each  pair of (origin,  destination) create entry for the OD  matrix
-        :return:
+
+        :return: Transition Matrix object
         """
 
         updates_to_TM_udf = F.udf(updates_to_the_transition_matrix,
@@ -65,7 +75,8 @@ class TM:
     def collect_TM_updates(self):
         """
         sums up the  contributions for different Origin-Destination pairs
-        :return:
+
+        :return: PySpark DF
         """
 
         TM = self.df.select(['updates_to_TM', 'delta_avg_ts']) \
@@ -83,7 +94,8 @@ class TM:
     def make_tm(self):
         """
         includes all the steps for OD
-        :return:
+
+        :return: PySpark DF, transition matrix
         """
         print('setting  1D state vector')
         self.set_d1_state_vector()
