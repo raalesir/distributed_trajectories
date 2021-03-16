@@ -3,6 +3,15 @@ Main module
 ===========
 """
 
+
+import numpy as np
+
+import os
+
+import matplotlib.pyplot as plt
+import scipy.sparse as sparse
+
+
 from  pyspark.sql import  SparkSession
 
 import pyspark.sql.functions as F
@@ -24,6 +33,7 @@ from udfs import   middle_interval_for_x
 
 
 INPUT = '../data/*'
+PLOT_DIR = 'plots'
 
 
 
@@ -178,6 +188,39 @@ class PrepareDataset:
 
 
 
+def prepare_for_plot(data, type_):
+    """
+    Takes PySpark DF and produces a sparse Scipy matrix to plot
+
+    :param type_: Transition Matrix or Origin-Destination
+    :param data: Pyspark DF
+    :return: Sparse matrix  to  plot
+    """
+
+    pd_df = data.toPandas()
+
+    data = np.array( pd_df[type_])
+    rows = np.array( pd_df['y'].astype('int'))
+    cols = np.array( pd_df['x'].astype('int'))
+
+    A = sparse.coo_matrix((data, (rows, cols)))
+
+    return  A
+
+
+def plot(matrix, fname):
+    """
+    plotting sparse matrix
+
+    :param fname: output file name
+    :param matrix: sparse Scipy matrix
+    :return: Plot in `plots` folder
+    """
+
+    plt.figure(figsize=(20, 20))
+    plt.spy(matrix, markersize=1, alpha=0.2)
+    plt.grid()
+    plt.savefig(os.path.join(PLOT_DIR, fname))
 
 
 
@@ -197,6 +240,7 @@ if __name__ == "__main__":
     print(preprocessed.head())
 
     od = OD(preprocessed).make_od()
+    plot(prepare_for_plot(od, 'updates_to_OD'), 'OD.png')
 
     # pdf_od = od.toPandas()
 
@@ -204,4 +248,6 @@ if __name__ == "__main__":
 
     tm = TM(preprocessed).make_tm()
 
-    print(tm.head())
+    plot(prepare_for_plot(tm,'updates_to_TM'), 'TM.png')
+
+    # print(tm.head())
