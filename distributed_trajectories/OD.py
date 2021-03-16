@@ -8,7 +8,7 @@ from pyspark.sql import Window
 
 
 from udfs  import  d1_state_vector, updates_to_the_transition_matrix
-from consts import  width, lat_cells, lon_cells
+from consts import  width, lat_cells, lon_cells, OD_time_frame
 
 class OD:
     """
@@ -34,7 +34,7 @@ class OD:
         d1_state_vector_udf = F.udf(d1_state_vector,
                                     ArrayType(ArrayType(FloatType()))
                                     )
-        window = Window.partitionBy(['id', F.to_date('avg_ts')]).orderBy('ts').rangeBetween(-60 * 60, 60 * 60)
+        window = Window.partitionBy(['id', F.to_date('avg_ts')]).orderBy('ts').rangeBetween(-OD_time_frame, OD_time_frame)
 
 
         self.df = self.df \
