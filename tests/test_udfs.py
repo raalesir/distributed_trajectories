@@ -8,7 +8,6 @@ from distributed_trajectories import udfs
 
 
 class TestBasic:
-    # INPUT = "data/input/dataset.jsonl"
 
 
 
