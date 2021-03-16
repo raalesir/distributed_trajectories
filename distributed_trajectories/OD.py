@@ -8,8 +8,8 @@ import  pyspark.sql.functions as F
 from pyspark.sql import Window
 
 
-from udfs  import  d1_state_vector, updates_to_the_transition_matrix
-from consts import  width, lat_cells, lon_cells, OD_time_frame
+from .udfs  import  d1_state_vector, updates_to_the_transition_matrix
+from .consts import  width, lat_cells, lon_cells, OD_time_frame
 
 class OD:
     """
