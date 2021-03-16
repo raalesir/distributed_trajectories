@@ -2,3 +2,4 @@ pyspark
 pytest
 pandas
 scipy
+matplotlib
