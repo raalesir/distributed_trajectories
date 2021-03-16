@@ -22,12 +22,12 @@ from pyspark.sql.types import StructType, StructField,\
 
 from  pyspark.sql import  Window
 
-from  consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells, width
+from  .consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells, width
 
-from OD import  OD
-from TM import TM
+from .OD import  OD
+from .TM import TM
 
-from udfs import   middle_interval_for_x
+from .udfs import   middle_interval_for_x
 
 
 
@@ -41,10 +41,6 @@ class PrepareDataset:
     """
     reading, filtering and preparing Dataset
     """
-
-    # beijing_lat_box = [39.6, 40.2]
-    # beijing_lon_box = [116.1, 116.7]
-
 
     def __init__(self, path):
         """

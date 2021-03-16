@@ -4,6 +4,7 @@
 """
 
 from math import  ceil
+import   numpy as np
 
 
 
@@ -82,10 +83,10 @@ def d1_state_vector(i,j, width, m, n):
 
         d2 = d2_coords(i, j, width)
         # print(d2)
-#         X,Y = make_mesh(width)
-#         vals = put_gauss_on_mesh(X,Y)
+        X,Y = make_mesh(width)
+        vals = put_gauss_on_mesh(X,Y)
         # print(vals)
-        vals = [ 0.011, 0.084,  0.011, 0.084, 0.62, 0.084, 0.011, 0.084, 0.011]
+        # vals = [ 0.011, 0.084,  0.011, 0.084, 0.62, 0.084, 0.011, 0.084, 0.011]
         d2_vals = list(zip(d2,vals))
 
 
