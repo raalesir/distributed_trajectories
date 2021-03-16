@@ -8,8 +8,8 @@ import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.types import ArrayType, FloatType
 
-from .udfs import d1_state_vector, updates_to_the_transition_matrix
-from .consts import width, lat_cells, lon_cells
+from udfs import d1_state_vector, updates_to_the_transition_matrix
+from consts import width, lat_cells, lon_cells
 
 class TM:
     """
@@ -91,6 +91,7 @@ class TM:
         return TM
 
 
+    @staticmethod
     def normalize_tm(tm):
         """
         normalizing  TM, so the sum over each row is 1
@@ -122,6 +123,6 @@ class TM:
         self.set_TM_updates()
         print("aggregating TM updates")
         tm = self.collect_TM_updates()
-        tm = normalize_tm(tm)
+        tm = self.normalize_tm(tm)
 
         return tm
