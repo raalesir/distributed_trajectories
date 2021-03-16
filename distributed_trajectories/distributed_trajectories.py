@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 import scipy.sparse as sparse
 
 
-from  pyspark.sql import  SparkSession
 
 import pyspark.sql.functions as F
 
@@ -22,7 +21,7 @@ from pyspark.sql.types import StructType, StructField,\
 
 from  pyspark.sql import  Window
 
-from  .consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells, width
+from  .consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells, width, spark
 
 from .OD import  OD
 from .TM import TM
@@ -225,12 +224,7 @@ def plot(matrix, fname, title):
 
 
 if __name__ == "__main__":
-    spark = SparkSession.builder\
-    .enableHiveSupport()\
-    .appName('Distributed Trajectories') \
-    .master("local[*]")\
-    .getOrCreate()
-
+    spark = spark
 
     data  = PrepareDataset(INPUT)
 

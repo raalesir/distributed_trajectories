@@ -71,22 +71,6 @@ class TM:
         self.df = self.df.withColumn('updates_to_TM', updates_to_TM_udf(F.col('d1_states'), F.col('d1_states_lag')))
 
 
-    def normalize_tm(self, tm):
-        """
-        normalizing  TM, so the sum over each row is 1
-
-        :return: Transition Matrix
-        """
-
-        window = Window.partitionBy(F.col('x'))  # .orderBy(F.col('y'))
-
-        tm = tm \
-            .withColumn('updates_to_TM', F.col('updates_to_TM') / F.sum(F.col('updates_to_TM')).over(window))
-            # .withColumn('number_of_items', F.count(F.col('y')).over(window)) \
-            # .filter(F.col('number_of_items') > 10)
-
-        return  tm
-
 
     def collect_TM_updates(self):
         """
@@ -107,6 +91,23 @@ class TM:
         return TM
 
 
+    def normalize_tm(tm):
+        """
+        normalizing  TM, so the sum over each row is 1
+
+        :return: Transition Matrix
+        """
+
+        window = Window.partitionBy(F.col('x'))  # .orderBy(F.col('y'))
+
+        tm = tm \
+            .withColumn('updates_to_TM', F.col('updates_to_TM') / F.sum(F.col('updates_to_TM')).over(window))
+        # .withColumn('number_of_items', F.count(F.col('y')).over(window)) \
+        # .filter(F.col('number_of_items') > 10)
+
+        return tm
+
+
     def make_tm(self):
         """
         includes all the steps for OD
@@ -121,6 +122,6 @@ class TM:
         self.set_TM_updates()
         print("aggregating TM updates")
         tm = self.collect_TM_updates()
-        tm = self.normalize_tm(tm)
+        tm = normalize_tm(tm)
 
         return tm
