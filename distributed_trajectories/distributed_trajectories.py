@@ -22,7 +22,7 @@ from pyspark.sql.types import StructType, StructField,\
 
 from  pyspark.sql import  Window
 
-from  consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells
+from  consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells, width
 
 from OD import  OD
 from TM import TM
@@ -208,10 +208,11 @@ def prepare_for_plot(data, type_):
     return  A
 
 
-def plot(matrix, fname):
+def plot(matrix, fname, title):
     """
     plotting sparse matrix
 
+    :param title: title of the plot
     :param fname: output file name
     :param matrix: sparse Scipy matrix
     :return: Plot in `plots` folder
@@ -220,6 +221,9 @@ def plot(matrix, fname):
     plt.figure(figsize=(20, 20))
     plt.spy(matrix, markersize=1, alpha=0.2)
     plt.grid()
+    plt.xlabel("state", fontsize=16)
+    plt.ylabel("state", fontsize=16)
+    plt.title(title, fontsize=20)
     plt.savefig(os.path.join(PLOT_DIR, fname))
 
 
@@ -240,7 +244,8 @@ if __name__ == "__main__":
     print(preprocessed.head())
 
     od = OD(preprocessed).make_od()
-    plot(prepare_for_plot(od, 'updates_to_OD'), 'OD.png')
+    plot(prepare_for_plot(od, 'updates_to_OD'), 'OD.png', "Origin-Destination matrix for n=%s, m=%s, width=%s"
+         %(lat_cells, lon_cells, width))
 
     # pdf_od = od.toPandas()
 
@@ -248,6 +253,6 @@ if __name__ == "__main__":
 
     tm = TM(preprocessed).make_tm()
 
-    plot(prepare_for_plot(tm,'updates_to_TM'), 'TM.png')
+    plot(prepare_for_plot(tm,'updates_to_TM'), 'TM.png',"TM matrix for n=%s, m=%s, width=%s"  %(lat_cells, lon_cells, width))
 
     # print(tm.head())
