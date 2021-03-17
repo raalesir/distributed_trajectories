@@ -1,17 +1,27 @@
 
 """
-    Transition Matrix object
-    ========================
+    Transition Matrix
+    =================
 """
 
 import pyspark.sql.functions as F
 from pyspark.sql import Window
 from pyspark.sql.types import ArrayType, FloatType
 
-from .udfs import d1_state_vector, updates_to_the_transition_matrix
-from .consts import width, lat_cells, lon_cells
+try:
+    # imports for pytest and documentation
+    from distributed_trajectories.consts import width, lat_cells, lon_cells
+    from distributed_trajectories.udfs import d1_state_vector, updates_to_the_transition_matrix
+except:
+    # imports for running the package.
+    from consts import width, lat_cells, lon_cells
+    from udfs import d1_state_vector, updates_to_the_transition_matrix
+
 
 class TM:
+    # from .consts import width, lat_cells, lon_cells
+    # from .udfs import d1_state_vector, updates_to_the_transition_matrix
+
     """
     creates Transition Matrix
     """

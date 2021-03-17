@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 import scipy.sparse as sparse
 
 
-
 import pyspark.sql.functions as F
 
 from pyspark.sql.types import StructType, StructField,\
@@ -21,15 +20,19 @@ from pyspark.sql.types import StructType, StructField,\
 
 from  pyspark.sql import  Window
 
-from .consts  import  beijing_lat_box,  beijing_lon_box, lat_cells, lon_cells, width, spark
 
-from .OD import  OD
-from .TM import TM
-
-from .udfs import   middle_interval_for_x
-
-
-
+try:
+    # imports for pytest and documentation
+    from distributed_trajectories.consts import beijing_lat_box, beijing_lon_box, lat_cells, lon_cells, width, spark, OD_time_frame
+    from distributed_trajectories.OD import OD
+    from distributed_trajectories.TM import TM
+    from distributed_trajectories.udfs import middle_interval_for_x, d1_state_vector, updates_to_the_transition_matrix
+except:
+    # imports for running the package.
+    from consts import beijing_lat_box, beijing_lon_box, lat_cells, lon_cells, width, spark, OD_time_frame
+    from OD import OD
+    from TM import TM
+    from udfs import middle_interval_for_x, d1_state_vector, updates_to_the_transition_matrix
 
 INPUT = '../data/*'
 PLOT_DIR = 'plots'
@@ -224,6 +227,8 @@ def plot(matrix, fname, title):
 
 
 if __name__ == "__main__":
+
+
     spark = spark
 
     data  = PrepareDataset(INPUT)
