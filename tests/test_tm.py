@@ -1,11 +1,14 @@
+
 """
 Tests for `distributed_trajectories` package
 """
 
 import pytest
+
+
 from distributed_trajectories.consts import spark
 
-from distributed_trajectories.distributed_trajectories import TM
+from distributed_trajectories.TM import TM
 
 
 class  TestTM:
