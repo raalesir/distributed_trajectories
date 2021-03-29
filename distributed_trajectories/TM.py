@@ -19,8 +19,6 @@ except:
 
 
 class TM:
-    # from .consts import width, lat_cells, lon_cells
-    # from .udfs import d1_state_vector, updates_to_the_transition_matrix
 
     """
     creates Transition Matrix
