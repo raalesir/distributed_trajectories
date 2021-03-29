@@ -3,8 +3,28 @@ Implementation
 
 
 
+
 The surface of interest is being partitioned by the rectangular grid, with the number of cells  along latitude and longitude as parameters.
 For all trajectory's points within the cell  we calculate the mean value and put it into  the center of the cell.
+
+For one dimensional cell, the procedure for mean value :math:`x_{mean}` calculation will look like.
+
+.. math::
+    A=2; B=8; m=6; x=5.43
+
+    dx = (B - A)/m =1
+
+    i = ceil((x - A) / dx) = 4
+
+    x_{mean}= A + dx * (i - 0.5) = 2+3.5=5.5
+
+
+..  image:: pics/middlex.png
+  :width: 400
+  :alt: Alternative text
+
+Therefore, for :math:`x_{mean} = 5.5, \forall x\in[5,6]`.
+
 For the corresponding timestamps we calculate the mean value as well.
 
 .. math::
