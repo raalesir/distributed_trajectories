@@ -22,12 +22,12 @@ from  pyspark.sql import  Window
 
 
 try:
-    # imports for pytest and documentation
+        # imports for pytest and documentation
     from distributed_trajectories.consts import beijing_lat_box, beijing_lon_box, lat_cells, lon_cells, width, spark, OD_time_frame
     from distributed_trajectories.OD import OD
     from distributed_trajectories.TM import TM
     from distributed_trajectories.udfs import middle_interval_for_x, d1_state_vector, updates_to_the_transition_matrix
-except:
+except ModuleNotFoundError:
     # imports for running the package.
     from consts import beijing_lat_box, beijing_lon_box, lat_cells, lon_cells, width, spark, OD_time_frame
     from OD import OD

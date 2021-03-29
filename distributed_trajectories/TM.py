@@ -10,11 +10,11 @@ from pyspark.sql.types import ArrayType, FloatType
 
 try:
     # imports for pytest and documentation
-    from distributed_trajectories.consts import width, lat_cells, lon_cells
+    from distributed_trajectories.consts import width, lat_cells, lon_cells, delta_avg_ts
     from distributed_trajectories.udfs import d1_state_vector, updates_to_the_transition_matrix
 except:
     # imports for running the package.
-    from consts import width, lat_cells, lon_cells
+    from consts import width, lat_cells, lon_cells, delta_avg_ts
     from udfs import d1_state_vector, updates_to_the_transition_matrix
 
 
@@ -94,7 +94,7 @@ class TM:
             .withColumn("x", F.col('updates_to_TM').getItem(0)) \
             .withColumn("y", F.col('updates_to_TM').getItem(1)) \
             .withColumn("val", F.col('updates_to_TM').getItem(2)) \
-            .filter(F.col('delta_avg_ts') < 700)\
+            .filter(F.col('delta_avg_ts') < delta_avg_ts)\
         .drop('updates_to_TM') \
             .groupBy(['x', 'y']).agg(F.sum('val').alias('updates_to_TM'))
 

@@ -67,7 +67,19 @@ def d1_coords(d2_vals, m):
     transform  2D to  1D coords
     """
 
-    d1_vals = [[float((coords[0] - 1) * m + coords[1]), val] for coords, val in d2_vals]
+    # d1_vals = [[float((coords[0] - 1) * m + coords[1]), val] for coords, val in d2_vals]
+    d1_vals = [[float(coords[0] * m + coords[1]), val] for coords, val in d2_vals]
+
+    return d1_vals
+
+
+
+def d1_coords_pure(d2_c, m):
+    """
+    transform  2D to  1D coords without values
+    """
+
+    d1_vals = [ [float(coords[0]* m + coords[1])] for coords in d2_c ]
 
     return d1_vals
 
@@ -116,7 +128,7 @@ def check_central_position(m, n, i, j, width):
     """
 
 
-    result = (i + width <= m) & (i - width > 0) & (j + width <= n) & (j - width > 0)
+    result = (i + width < m) & (i - width >= 0) & (j + width < n) & (j - width >= 0)
 
     return result
 
@@ -132,3 +144,15 @@ def updates_to_the_transition_matrix(state1, state2):
 
     return update
 
+
+
+def filter_OD(origins, destinations):
+    """
+    takes lists of origins and destinations in (1D notation)
+    and returns list of tuples with OD coorinates
+    """
+    if len(origins) == len(destinations):
+        return list(zip(origins, destinations))
+
+    else:
+        return []

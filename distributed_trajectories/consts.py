@@ -11,6 +11,7 @@ width = 1
 n = lon_cells = 100
 m = lat_cells = 100
 OD_time_frame = 2*60*60
+delta_avg_ts = 400
 
 
 
