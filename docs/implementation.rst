@@ -92,7 +92,7 @@ State vector for "distributed state" and Transition Matrix
 ----------------------------------------------------------
 
 
-In  the text above we assumed that the object  is located in the single cell, e.g. :math:`c(i,j)`.
+In  the text above we assumed that the object  is located in the single cell, e.g. :math:`c(i,j)`, where `i` and `j` are the indexes along latitude and longitude correspondingly.
 
 A more general case is to assume that the location of the object is not known exactly, but with certain probability.
 For example, one may think that the probability of the object location is smeared out over  `q` cells around a central cell,
@@ -107,21 +107,34 @@ where :math:`p_{k}(c_{ij})` is the probability of the object to be located at th
 cell :math:`c_{ij}`, and summing is done for all the neighbours, including  the central  cell.
 
 
-In  this case the system is in a *distributed state*, and it's state vector has `q` nonzero entries (out of :math:`n\times m`, summing up to 1.
+In  this case the system is in a **distributed state**, and it's state vector has `q` nonzero entries (out of :math:`n\times m`), summing up to 1.
 
 A transition  matrix in this case will have the same meaning, but will have move complex structure.
-Lets assume that `q=9`, i.e. the state will be distributed among 9 cells:
+Lets assume that `q=9`, i.e. the state will be distributed among 9 cells on the plane surface:
 
 
     +-------------+------------+------------+
-    |`m(i-1)+j-1` | `m(i-1)+j` |`m(i-1)+j+1`|
+    |`(i-1, j-1)` | `(i-1, j)` |`(i-1, j+1)`|
     +-------------+------------+------------+
-    | `mi+j-1`    |  `mi+j`    | `mi+j+1`   |
+    | `(i,j-1)`   |  `(i,j)`   | `(i,j+1)`  |
     +-------------+------------+------------+
-    |`m(i+1)+j-1` | `m(i+1)+j` |`m(i+1)+j+1`|
+    | `(i+1,j-1)` |  `(i+1,j)` | `(i+1,j+1)`|
     +-------------+------------+------------+
 
-:math:`(mi + j)` being the central cell, and `m` -- the number  of columns.
+    with :math:`(i,j)` being location of a central cell.
+
+
+1D representation
++++++++++++++++++
+
+From 2D notion we will move to 1D:
+
+:math:`x = \{\dots \\ m(i-1)+j-1, m(i-1)+j, m(i-1)+j+1 \dots \\ mi+j-1, mi+j,  mi+j+1, \dots \\ m(i+1)+j-1, m(i+1)+j, m(i+1)+j+1 \\
+\dots\}`
+
+
+
+where `m` -- the number  of columns, and :math:`\lvert x \rvert = m\times n`.
 
 Those 9  states will give rise to :math:`9\times 9=81` entries in the transition matrix between two states with central cells
 :math:`(i_1, j_1) (blue)\to (i_2, j_2) (red)`.
