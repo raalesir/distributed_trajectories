@@ -139,6 +139,8 @@ where `m` -- the number  of columns, and :math:`\lvert x \rvert = m\times n`.
 Those 9  states will give rise to :math:`9\times 9=81` entries in the transition matrix between two states with central cells
 :math:`(i_1, j_1) (blue)\to (i_2, j_2) (red)`.
 
+Since :math:`\sum x_1  =1`  and :math:`\sum x_2  =1`, so for  their outer product is valid :math:`\sum(x_1\otimes x_2)  =1`,
+where :math:`x_1` and :math:`x_2` are the :math:`\lvert x_1 \rvert = \lvert x_2 \rvert =  m\times n` distributed  state vectors.
 
 
 ..  image:: pics/od_distr.png
@@ -148,3 +150,10 @@ Those 9  states will give rise to :math:`9\times 9=81` entries in the transition
 The gap of length `m` is shown with the curly bracket. For `q=1` that is than the distribution is a Dirak's delta function,
 a state would be described by 1 number and the transition by 1 number as well. For case `q=25` (two layers of neghbours),
 the state would be given by 25 numbers, and the transition by 625 numbers.
+
+
+Contributions  from consecutive transitions are accumulated into the Transition Matrix. Each set of 9 dots  in reality corresponds to 81, as shown in the inset.
+
+..  image:: pics/tm_example.png
+  :width: 500
+  :alt: Alternative text
