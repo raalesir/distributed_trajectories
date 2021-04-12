@@ -25,7 +25,7 @@ For one dimensional cell, the procedure for mean value :math:`x_{mean}` calculat
 
 Therefore,  :math:`x_{mean} = 9, \forall x\in[8,10]`, taking care of border cases.
 
-After tesselating  the surface into :math:`x\times m` rectangulars, and projecting the coordinates into the  center of cell,
+After tesselating  the surface into :math:`n\times m` rectangulars, and projecting the coordinates into the  center of cell,
 we calculate the timestamp for that cell as mean of the timestamps, while the object was within the  cell.
 
 .. math::
@@ -37,7 +37,7 @@ we calculate the timestamp for that cell as mean of the timestamps, while the ob
 
 
 where :math:`\forall j\in[1, n\times m]`,  `k` -- is the number of points of the trajectory
-(and timestamps) while object was within cell `j`, and (`n, m`) are the number of
+(and timestamps) while object was within cell `j` before moving into another cell, and (`n, m`) are the number of
 splits along latitude and longitude.
 
 
@@ -92,7 +92,8 @@ State vector for "distributed state" and Transition Matrix
 ----------------------------------------------------------
 
 
-In  the text above we assumed that the object  is located in the single cell, e.g. :math:`c(i,j)`, where `i` and `j` are the indexes along latitude and longitude correspondingly.
+In  the text above we assumed that the object  is located in the single cell, e.g. :math:`c(i,j)`, where :math:`\forall i\in[1..n]`
+and :math:`\forall j \in [1..m]` are the indexes along latitude and longitude correspondingly.
 
 A more general case is to assume that the location of the object is not known exactly, but with certain probability.
 For example, one may think that the probability of the object location is smeared out over  `q` cells around a central cell,
@@ -147,13 +148,26 @@ where :math:`x_1` and :math:`x_2` are the :math:`\lvert x_1 \rvert = \lvert x_2 
   :width: 400
   :alt: Alternative text
 
-The gap of length `m` is shown with the curly bracket. For `q=1` that is than the distribution is a Dirak's delta function,
+The gap of length `m` is shown with  curly bracket. For `q=1` that is than the distribution is a Dirak's delta function,
 a state would be described by 1 number and the transition by 1 number as well. For case `q=25` (two layers of neghbours),
 the state would be given by 25 numbers, and the transition by 625 numbers.
 
 
-Contributions  from consecutive transitions are accumulated into the Transition Matrix. Each set of 9 dots  in reality corresponds to 81, as shown in the inset.
+Contributions  from consecutive transitions are accumulated into  Transition Matrix. Each set of 9 dots  in reality corresponds to 81, as shown in the inset,
+width is the number of layers around the central cell, `width=1` for  `q=9`, `width=2` for `q=25` and so on.
 
 ..  image:: pics/tm_example.png
+  :width: 500
+  :alt: Alternative text
+
+
+
+Origin-Destination matrix
+-------------------------
+
+
+Origin-Destination matrix resembles transition matrix with one difference -- destination is separated from the origin not by one time-step, but by multiple, which has a default of 2  hours, and can be set as a parameter.
+
+..  image:: pics/OD.png
   :width: 500
   :alt: Alternative text
