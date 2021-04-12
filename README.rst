@@ -19,7 +19,7 @@ Distributed Trajectories
 Provides some basics for manipulation with the descrete distributed trajectories  with the Spark engine
 
 
-* Free software: GNU General Public License v3
+* Free software: MIT license
 * Documentation: https://distributed-trajectories.readthedocs.io.
 
 
