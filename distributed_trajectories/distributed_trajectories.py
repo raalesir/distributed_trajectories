@@ -23,13 +23,15 @@ from  pyspark.sql import  Window
 
 try:
         # imports for pytest and documentation
-    from distributed_trajectories.consts import beijing_lat_box, beijing_lon_box, lat_cells, lon_cells, width, spark, OD_time_frame
+    from distributed_trajectories.consts import beijing_lat_box, beijing_lon_box, lat_cells, lon_cells, width, spark, OD_time_frame, speed, \
+        timestamps_per_hour
     from distributed_trajectories.OD import OD
     from distributed_trajectories.TM import TM
     from distributed_trajectories.udfs import middle_interval_for_x, d1_state_vector, updates_to_the_transition_matrix
 except ModuleNotFoundError:
     # imports for running the package.
-    from consts import beijing_lat_box, beijing_lon_box, lat_cells, lon_cells, width, spark, OD_time_frame
+    from consts import beijing_lat_box, beijing_lon_box, lat_cells, lon_cells, width, spark, OD_time_frame, speed,\
+        timestamps_per_hour
     from OD import OD
     from TM import TM
     from udfs import middle_interval_for_x, d1_state_vector, updates_to_the_transition_matrix
@@ -96,12 +98,64 @@ class PrepareDataset:
 
         print('cropping data')
         self.crop_data()
+        print("keeping just those ID, which have more than %i point per hour" %(timestamps_per_hour))
+        self.filter_too_sparse_IDs()
+        print("removing duplicates for ID and timestamp")
+        self.remove_duplicates()
+        print("removing too fast objects")
+        self.remove_too_fast_objects()
+
         print("setting mean for lat,lon")
         self.set_middle_interval_for_x()
         print("set helper column")
         self.set_helper_column()
         print("calculate avg time for  cell")
         self.set_avg_time_for_cell()
+
+
+    def filter_too_sparse_IDs(self):
+        """
+        keeping just those tracks which have > `timestamps_per_hour` points per hour on average
+
+        :return: filtered `self.df`
+        """
+
+        ids = self.df.groupBy(['id', F.to_date(F.col('ts'))]) \
+            .count() \
+            .filter(F.col('count') > timestamps_per_hour * 24) \
+            .select('id') \
+            .distinct()
+
+        self.df = self.df.join(F.broadcast(ids), ['id'], how='inner')
+
+
+    def remove_too_fast_objects(self):
+        """
+        some data entries are surely erroneus, so some objects move up to 10-20 km per second.
+        We should remove it.
+
+        :return:  filtered `self.df`
+        """
+
+        window = Window.partitionBy(['id', F.to_date('ts')]).orderBy('ts')
+
+        self.df = self.df \
+            .withColumn('delta_lat', (F.lag('lat').over(window) - F.col('lat'))) \
+            .withColumn('delta_lon', (F.lag('lon').over(window) - F.col('lon'))) \
+            .withColumn('delta_ts', (F.col('ts').cast('long') - F.lag('ts').over(window).cast('long'))) \
+            .withColumn('speed1', F.col('delta_lat') / F.col('delta_ts')) \
+            .withColumn('speed2', F.col('delta_lon') / F.col('delta_ts')) \
+            .dropna() \
+            .filter((F.abs(F.col('speed1')) < speed) & (F.abs(F.col('speed2')) < speed))
+
+
+    def remove_duplicates(self):
+        """
+        removes duplicates for `ID` and `timestamp`
+
+        :return: filtered `self.df`
+        """
+        self.df = self.df.dropDuplicates(['id', 'ts'])
 
 
     def set_avg_time_for_cell(self):
