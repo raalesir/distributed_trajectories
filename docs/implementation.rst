@@ -82,7 +82,7 @@ For example, on the figure below, the blackened cell will correspond to the nonz
 
 
 
-The transition matrix is  square matrix, whose  elements :math:`a(i,j)` are  the probabilities of      moving from the state
+The transition matrix is a square matrix, whose  elements :math:`a(i,j)` are  the probabilities of      moving from the state
 `i` to the state `j`. Since the length of the state vector is :math:`n\times m`,  the shape of  the transition matrix  is
 :math:`(nm\times nm)`.
 
@@ -105,13 +105,13 @@ For example, one may think that the probability of the object location is smeare
 
 
 where :math:`p_{k}(c_{ij})` is the probability of the object to be located in the `k`-th element  of  the set,
-and  :math:`{ij}` are  coordinates in the rectangular grid.
+and  :math:`{ij}` are the coordinates in the rectangular grid.
 
 
 In  this case the system is in a **distributed state**, and it's state vector has `q` nonzero entries (out of :math:`n\times m`), summing up to 1.
 
 A transition  matrix in this case will have the same meaning, but will have more complex structure.
-Lets assume that `q=9`, i.e. the state will be distributed among 9 adjacent cells on the plane surface:
+Lets assume that :math:`q=9`, and the  state will be distributed among 9 adjacent cells on the plane surface:
 
 
     +-------------+------------+------------+
@@ -154,12 +154,15 @@ Indeed, let :math:`x_1` be a distributed state vector, so :math:`\sum_{i=1}^{n\t
   :alt: Alternative text
 
 The gap of length `m` is shown with  curly bracket. For `q=1`, that is then the distribution is a Dirak's delta function,
-a state would be described by 1 number and the transition by 1 number as well. For case `q=25` (two layers of neighbours),
+a state would be described by 1 number and the transition by 1 number as well. For case `q=25`,
 the state would be given by 25 numbers, and the transition by 625 numbers.
 
 
-Contributions  from consecutive transitions are accumulated into the Transition Matrix. Each set of 9 dots  in reality corresponds to 81, as shown in the inset,
-width is the number of layers around the central cell, `width=1` for  `q=9`, `width=2` for `q=25` and so on.
+Contributions  from consecutive transitions are accumulated into the Transition Matrix, and normilized afterwards:
+:math:`\sum_{i=1}^{n\times m} c_{ij}=1`,  :math:`\forall j\in[1\dots n\times m]`.
+
+Each set of 9 dots  in reality corresponds to 81, as shown in the inset,
+`width` is the number of layers around the central cell, `width=1` for  `q=9`, `width=2` for `q=25` and so on.
 
 ..  image:: pics/tm_example.png
   :width: 500
