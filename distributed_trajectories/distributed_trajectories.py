@@ -168,6 +168,8 @@ class PrepareDataset:
             .agg(F.avg('ts').cast('timestamp').alias('avg_ts')) \
             .drop('date')
 
+        return  self.df
+
 
 
     def crop_data(self):
