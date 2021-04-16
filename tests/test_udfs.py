@@ -1,11 +1,18 @@
-#!/usr/bin/env python
 
-"""Tests for `distributed_trajectories` package."""
+
+"""
+=========================================
+Tests for `distributed_trajectories.udfs`
+=========================================
+"""
 
 from distributed_trajectories import udfs
 
 
 class TestBasic:
+    """
+    Testing UDFs
+    """
     def test_d1_state_vector_1(self):
         """
         testing the transformation to 1D coordinates
