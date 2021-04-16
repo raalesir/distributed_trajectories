@@ -16,7 +16,8 @@ class TestBasic:
     def test_d1_state_vector_1(self):
         """
         testing the transformation to 1D coordinates
-        :return:
+
+        :return: True/False
         """
         res = udfs.d1_state_vector(i=2, j=4, width=1, m=7, n=6)
         res = [el[0] for el in res]
@@ -27,6 +28,7 @@ class TestBasic:
     def test_d1_state_vector_2(self):
         """
         testing the transformation to 1D coordinates with `width==0`
+
         :return:
         """
         res = udfs.d1_state_vector(i=2, j=5, width=0, m=7, n=7)
@@ -37,7 +39,8 @@ class TestBasic:
     def test_d1_state_vector_3(self):
         """
         testing the transformation to 1D coordinates out of grid
-        :return:
+
+        :return: True/False
         """
         res = udfs.d1_state_vector(i=2, j=17, width=1, m=7, n=17)
         res = [el[0] for el in res]
@@ -48,7 +51,8 @@ class TestBasic:
         """
         testing the coordinates for the middle of the interval and the box number
         middle_interval_for_x(x, A, B, m)
-        :return:
+
+        :return: True/False
         """
         res = udfs.middle_interval_for_x(4.67, 3, 7, 4)
 
@@ -58,7 +62,8 @@ class TestBasic:
         """
         testing the coordinates for the middle of the interval and the box number
         middle_interval_for_x(x, A, B, m)
-        :return:
+
+        :return: True/False
         """
         res = udfs.middle_interval_for_x(3, 3, 7, 4)
 
@@ -68,7 +73,8 @@ class TestBasic:
         """
         testing the coordinates for the middle of the interval and the box number
         middle_interval_for_x(x, A, B, m)
-        :return:
+
+        :return: True/False
         """
         res = udfs.middle_interval_for_x(7, 3, 7, 4)
 
@@ -78,7 +84,7 @@ class TestBasic:
         """
         testing 2D coords creation for given width
 
-        :return:  Truee or False
+        :return:  True or False
         """
 
         res = udfs.d2_coords(1, 3, 0)
@@ -90,7 +96,7 @@ class TestBasic:
         """
         testing 2D coords creation for given width
 
-        :return:  Truee or False
+        :return:  True or False
         """
 
         res = udfs.d2_coords(1, 3, 1)
@@ -101,7 +107,8 @@ class TestBasic:
     def test_d1_coords_pure(self):
         """
         transform for 2D to 1D coords
-        :return:
+
+        :return: True/False
         """
         res = udfs.d1_coords_pure([(0, 2)], 4)
 
@@ -111,7 +118,8 @@ class TestBasic:
     def test_d1_coords_pure_1(self):
         """
            transform for 2D to 1D coords
-           :return:
+
+           :return:  True/False
            """
         res = udfs.d1_coords_pure([(0, 2), (0, 4), (1, 3)], 5)
 
@@ -121,7 +129,8 @@ class TestBasic:
     def test_check_central_position_pass(self):
         """
         testing if the filter for  the elements works.... Needs better docs...
-        :return:
+
+        :return: True/False
         """
 
         res = udfs.check_central_position(m=4, n=5, i=1, j=3, width=1)
@@ -132,7 +141,8 @@ class TestBasic:
     def test_check_central_position_fail(self):
         """
         testing if the filter for  the elements works.... Needs better docs...
-        :return:
+
+        :return: True/False
         """
 
         res = udfs.check_central_position(m=4, n=5, i=1, j=4, width=1)
@@ -143,7 +153,7 @@ class TestBasic:
     def test_filter_OD_pass(self):
         """
 
-        :return:
+        :return: True/False
         """
 
         res = udfs.filter_OD([1,2,3], [4,5,6])
@@ -154,7 +164,7 @@ class TestBasic:
     def test_filter_OD_fail(self):
         """
 
-        :return:
+        :return: True/False
         """
 
         res = udfs.filter_OD([1, 2, 3], [4, 5])
