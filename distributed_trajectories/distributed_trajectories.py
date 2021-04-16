@@ -226,6 +226,7 @@ class PrepareDataset:
     def set_helper_column(self):
         """
         the helper column is needed for further aggregations
+
         :return: `self.df`
         """
         window = Window.partitionBy([F.col('id'), F.to_date(F.col('ts'))]).orderBy(F.col('ts'))
@@ -237,6 +238,9 @@ class PrepareDataset:
             .withColumn('helper', F.sum((F.col('n1') | F.col('n2')).cast(IntegerType())).over(window)) \
             .select(['id', 'ts', 'lon_middle', 'lat_middle', 'lon_idx', 'lat_idx', 'helper']) \
             .dropna()
+
+        return self.df
+
 
 
 
