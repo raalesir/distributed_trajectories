@@ -2,8 +2,6 @@ Modules
 =======
 
 
-==================
-
 
 
 .. automodule:: distributed_trajectories.OD
@@ -31,4 +29,11 @@ Modules
 
 .. automodule:: distributed_trajectories.distributed_trajectories
    :members:
+
+
+==================
+
+
+
+
 

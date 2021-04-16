@@ -9,6 +9,7 @@ Welcome to Distributed Trajectories's documentation!
    installation
    usage
    modules
+   tests
    implementation
    contributing
    authors
