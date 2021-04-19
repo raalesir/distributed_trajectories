@@ -174,8 +174,20 @@ Origin-Destination matrix
 -------------------------
 
 
-Origin-Destination matrix resembles transition matrix with one difference -- destination is separated from the origin not by one time-step, but by multiple, which has a default of 2  hours, and can be set as a parameter.
+Origin-Destination matrix (OD) resembles TM  with one difference -- destination is separated from the origin not by one time-step, but by multiple, which has a default of 2  hours, and can be set as a parameter, `T`.
 
 ..  image:: pics/OD.png
   :width: 500
   :alt: Alternative text
+
+
+The data for OD are being  collected in a  sliding window manner with the `T` time window size.
+Such  strategy allows to filter afterwards **any** Origin, Destination and Time separated by  the given `T`.
+
+See the sketch below, where :math:`s_i = (O_i, D_i, t_i)` is  a triplet of Origin, Destination and  time for the origin.
+
+
+..  image:: pics/OD_sliding.png
+  :width: 500
+  :alt: Alternative text
+
