@@ -12,7 +12,7 @@ from pyspark.sql.types import  TimestampType
 
 
 
-class  Tests:
+class  TestsBase:
     """
     Testing
     """
