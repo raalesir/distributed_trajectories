@@ -4,10 +4,10 @@ Implementation
 
 
 
-The surface of interest is being partitioned by the rectangular grid, with the number of cells  along latitude and longitude as parameters.
-For all trajectory's points within the cell  we calculate the mean value and put it into  the center of the cell.
+The surface of interest is being partitioned by the rectangular grid, with the number of cells  along latitude and longitude as parameters, `m` and `n`.
+For all trajectory's points within each cell  we calculate the mean value and put it into  the center of the cell.
 
-For one dimensional cell, the procedure for mean value :math:`x_{mean}` calculation will look like.
+For one dimensional cell, the procedure for mean value :math:`x_{center}` calculation will look like.
 
 .. math::
     A=2; B=14; m=6; x=8.43
@@ -16,21 +16,21 @@ For one dimensional cell, the procedure for mean value :math:`x_{mean}` calculat
 
     i = ceil((x - A) / dx) = 4
 
-    x_{mean}= A + dx * (i - 0.5) = 2+2*3.5=9
+    x_{center}= A + dx * (i - 0.5) = 2+2*3.5=9
 
 
 ..  image:: pics/middlex.png
   :width: 400
   :alt: Alternative text
 
-Therefore,  :math:`x_{mean} = 9, \forall x\in[8,10]`, taking care of border cases.
+Therefore,  :math:`x_{center} = 9, \forall x\in[8,10]`, taking care of border cases.
 
 After tesselating  the surface into :math:`n\times m` rectangulars, and projecting the coordinates into the  center of cell,
 we calculate the timestamp for that cell as mean of the timestamps, while the object was within the  cell.
 
 .. math::
 
-    (x^j, y^j) = (x^j_{mean}, y^j_{mean}),
+    (x^j, y^j) = (x^j_{center}, y^j_{center}),
 
     t^j = \frac{1}{k}\sum_{i=1,k}{t^j_i},
 
@@ -55,13 +55,12 @@ The schema for the PySpark DataFrame after that transformation looks like the fo
 .. code-block:: console
 
      root
-     |-- id: integer (nullable = true)
+     |-- id: integer (nullable = true)          // track ID
      |-- lat_idx: integer (nullable = true)     // index of the cell along latitude
      |-- lon_idx: integer (nullable = true)     // index  of the  cell along longitude
-     |-- helper: long (nullable = true)
-     |-- avg_ts: timestamp (nullable = true)    // average time for  the timestamps of points in the  same  cell
-     |-- lon_middle: float (nullable = true)    // average longitude
-     |-- lat_middle: float (nullable = true)    //  and average  latitude as the center of the cell
+     |-- avg_ts: timestamp (nullable = true)    // average time for  the timestamps of points in the cell
+     |-- lon_middle: float (nullable = true)    //  longitude of the center of the cell
+     |-- lat_middle: float (nullable = true)    //  latitude of the center of the cell
 
 
 State vectors and Transition  Matrix
@@ -182,9 +181,9 @@ Origin-Destination matrix (OD) resembles TM  with one difference -- destination 
 
 
 The data for OD are being  collected in a  sliding window manner with the `T` time window size.
-Such  strategy allows to filter afterwards **any** Origin, Destination and Time separated by  the given `T`.
+Such  strategy allows to filter afterwards **any** Origin, Destination and Time, separated by  the given `T`.
 
-See the sketch below, where :math:`s_i = (O_i, D_i, t_i)` is  a triplet of Origin, Destination and  time for the origin.
+See the sketch below, where :math:`s_i = (O_i, D_i, t_i)` is  a triplet of Origin, Destination and  time for the origin, and :math:`T=3`.
 
 
 ..  image:: pics/OD_sliding.png
