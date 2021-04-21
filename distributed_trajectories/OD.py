@@ -49,6 +49,8 @@ class OD:
 
         self.df = self.df \
             .withColumn('ts', F.col('avg_ts').cast('long')) \
+            .withColumn('first_ts', F.first('avg_ts').over(window)) \
+            .withColumn('last_ts', F.last('avg_ts').over(window)) \
             .withColumn('first_lat_idx', F.first('lat_idx').over(window)) \
             .withColumn('last_lat_idx', F.last('lat_idx').over(window)) \
             .withColumn('first_lon_idx', F.first('lon_idx').over(window)) \
