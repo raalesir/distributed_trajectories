@@ -160,12 +160,17 @@ class PrepareDataset:
 
     def set_avg_time_for_cell(self):
         """
-        for each  cell we  calculate time  as  the average time  for all points  in that cell
+        for each  cell we  calculate time  as  the average time  for all points  in that cell, `avg_ts`;
+        The `ts_1` and `ts_2` are the timestamps for the user enter and leave the cell
+
         :return: `self.df`
         """
 
         self.df = self.df.groupBy(['id', F.to_date(F.col('ts')).alias('date'), 'lat_idx', 'lon_idx', 'helper']) \
-            .agg(F.avg('ts').cast('timestamp').alias('avg_ts')) \
+            .agg(F.avg('ts').cast('timestamp').alias('avg_ts'),
+                 F.first(F.col('ts')).alias('ts_1'),
+                 F.last(F.col('ts')).alias("ts_2")
+                 )\
             .drop('date')
 
         return  self.df
