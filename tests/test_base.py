@@ -10,6 +10,8 @@ from distributed_trajectories.distributed_trajectories import PrepareDataset
 from pyspark.sql import  Window
 from pyspark.sql.types import  TimestampType
 
+from distributed_trajectories.consts import spark
+
 
 
 class  TestsBase:
