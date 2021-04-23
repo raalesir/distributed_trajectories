@@ -59,8 +59,37 @@ The schema for the PySpark DataFrame after that transformation looks like the fo
      |-- lat_idx: integer (nullable = true)     // index of the cell along latitude
      |-- lon_idx: integer (nullable = true)     // index  of the  cell along longitude
      |-- avg_ts: timestamp (nullable = true)    // average time for  the timestamps of points in the cell
-     |-- lon_middle: float (nullable = true)    //  longitude of the center of the cell
-     |-- lat_middle: float (nullable = true)    //  latitude of the center of the cell
+     |-- lon_middle: float (nullable = true)    // longitude of the center of the cell
+     |-- lat_middle: float (nullable = true)    // latitude of the center of the cell
+     |-- ts_1: timestamp (nullable = true)      // timestamp when the user entered the cell
+     |-- ts_2: timestamp (nullable = true)      // timestamp when the user left the cell
+
+
+Each row in the DataFrame allows to identify the user, its location and timestamp associated with it, and the amount of time spend in that location.
+
+Such kind of information is enough to calculate the regions, where the users are static. Those could be affiliated with Origins or Destinations, just by filtering those row where users spent more than certain amount of time, say 6 hours, between 24 and 6 in the morning.
+
+.. code-block::  console
+
+    df\
+    .filter(F.col('id').isin(list(range(1, 1000))))\
+    .withColumn('duration', (F.col('ts_2').cast('long')-F.col('ts_1').cast('long')))\
+    .select(['id','lon_middle', 'lat_middle', 'duration', 'ts_1'])\
+    .filter(F.col('duration') > 6*3600)\
+    .filter(
+        (F.hour(F.col('ts_1')) > 0 ) & (F.hour(F.col('ts_1')) < 6)
+    )\
+    .toPandas()
+
+
+
+
+..  image:: pics/morning.png
+  :width: 600
+  :alt: Alternative text
+
+
+Thoose cells could be marked as Origins, for instance.
 
 
 State vectors and Transition  Matrix

@@ -18,5 +18,5 @@ Tests
 
 
 
-.. automodule:: tests.tests
+.. automodule:: tests.test_base
    :members:
