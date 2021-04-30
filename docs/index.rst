@@ -14,6 +14,7 @@ Welcome to Distributed Trajectories's documentation!
    contributing
    authors
    history
+   ack
 
 Indices and tables
 ==================
